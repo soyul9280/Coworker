@@ -14,6 +14,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -62,6 +63,26 @@ public class User {
   @Column(name = "linked_oauth_providers",columnDefinition = "jsonb")
   private List<OAuthProvider> linkedOAuthProviders;
 
+  @Builder
+  public User(UUID id,
+      Instant createdAt,
+      Instant updatedAt,
+      String email,
+      String name,
+      String password,
+      Role role,
+      String profileImageUrl,
+      List<OAuthProvider> linkedOAuthProviders) {
+      this.id = id;
+      this.createdAt = createdAt;
+      this.updatedAt = updatedAt;
+      this.email = email;
+      this.name = name;
+      this.password = password;
+      this.role = role;
+      this.profileImageUrl = profileImageUrl;
+      this.linkedOAuthProviders = linkedOAuthProviders;
+  }
 
 
 }
