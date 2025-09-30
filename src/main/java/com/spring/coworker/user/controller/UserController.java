@@ -3,6 +3,7 @@ package com.spring.coworker.user.controller;
 import com.spring.coworker.user.dto.request.ChangePasswordRequest;
 import com.spring.coworker.user.dto.request.ProfileUpdateRequest;
 import com.spring.coworker.user.dto.request.UserCreateRequest;
+import com.spring.coworker.user.dto.request.UserRoleUpdateRequest;
 import com.spring.coworker.user.dto.response.ProfileDto;
 import com.spring.coworker.user.dto.response.UserDto;
 import com.spring.coworker.user.service.UserService;
@@ -50,5 +51,12 @@ public class UserController {
       @RequestBody ChangePasswordRequest request) {
     userService.updatePassword(userId, request);
     return ResponseEntity.ok().build();
+  }
+
+  @PatchMapping("/{userId}/role")
+  ResponseEntity<UserDto> updateRole(@PathVariable UUID userId,
+      @RequestBody UserRoleUpdateRequest request) {
+    UserDto result = userService.updateRole(userId, request);
+    return ResponseEntity.ok(result);
   }
 }

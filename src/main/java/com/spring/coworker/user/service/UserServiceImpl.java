@@ -4,6 +4,7 @@ import com.spring.coworker.user.dto.mapper.UserMapper;
 import com.spring.coworker.user.dto.request.ChangePasswordRequest;
 import com.spring.coworker.user.dto.request.ProfileUpdateRequest;
 import com.spring.coworker.user.dto.request.UserCreateRequest;
+import com.spring.coworker.user.dto.request.UserRoleUpdateRequest;
 import com.spring.coworker.user.dto.response.ProfileDto;
 import com.spring.coworker.user.dto.response.UserDto;
 import com.spring.coworker.user.entity.User;
@@ -59,5 +60,13 @@ public class UserServiceImpl implements UserService {
         .orElseThrow(() -> new IllegalArgumentException("user not found"));
     String newPassword = changePasswordRequest.password();
     user.updatePassword(newPassword);
+  }
+
+  @Override
+  public UserDto updateRole(UUID userId, UserRoleUpdateRequest userRoleUpdateRequest) {
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new IllegalArgumentException("user not found"));
+    user.updateRole(userRoleUpdateRequest.role());
+    return userMapper.toDto(user);
   }
 }
