@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: coworker
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      enabled: true
+  config:
+    import: optional:file:.env[.properties]
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database: postgresql
+  transaction:
+    default-timeout: 30
+springdoc:
+  swagger-ui:
