@@ -84,5 +84,23 @@ public class User {
       this.linkedOAuthProviders = linkedOAuthProviders;
   }
 
+  public void updateProfile(String name, String profileImageUrl) {
+    if (name != null) {
+      this.name = name;
+    }
+    if (profileImageUrl != null) {
+      this.profileImageUrl = profileImageUrl;
+    }
+  }
+
+  public void updatePassword(String password) {
+    if (password != null || !password.isBlank()) {
+      this.password = password;
+    }
+  }
+
+  public void updateRole(Role role) {
+    this.role = role;
+  }
 
 }

@@ -16,6 +16,6 @@ public class UserDto {
   private final String email;
   private final String name;
   private final Role role;
-  private final List<OAuthProvider> linkedOAuthProviders,
+  private final List<OAuthProvider> linkedOAuthProviders;
  // private final List<Group> groups;
 }
