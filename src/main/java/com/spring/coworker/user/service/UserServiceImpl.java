@@ -1,6 +1,7 @@
 package com.spring.coworker.user.service;
 
 import com.spring.coworker.user.dto.mapper.UserMapper;
+import com.spring.coworker.user.dto.request.ChangePasswordRequest;
 import com.spring.coworker.user.dto.request.ProfileUpdateRequest;
 import com.spring.coworker.user.dto.request.UserCreateRequest;
 import com.spring.coworker.user.dto.response.ProfileDto;
@@ -50,5 +51,13 @@ public class UserServiceImpl implements UserService {
         .orElseThrow(() -> new IllegalArgumentException("user not found"));
     user.updateProfile(profileUpdateRequest.name(), profileUpdateRequest.profileImageUrl());
     return userMapper.toProfileDto(user);
+  }
+
+  @Override
+  public void updatePassword(UUID userId, ChangePasswordRequest changePasswordRequest) {
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new IllegalArgumentException("user not found"));
+    String newPassword = changePasswordRequest.password();
+    user.updatePassword(newPassword);
   }
 }

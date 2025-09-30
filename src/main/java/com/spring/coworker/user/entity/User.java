@@ -93,4 +93,10 @@ public class User {
     }
   }
 
+  public void updatePassword(String password) {
+    if (password != null || !password.isBlank()) {
+      this.password = password;
+    }
+  }
+
 }

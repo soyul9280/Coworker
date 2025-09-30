@@ -1,5 +1,6 @@
 package com.spring.coworker.user.controller;
 
+import com.spring.coworker.user.dto.request.ChangePasswordRequest;
 import com.spring.coworker.user.dto.request.ProfileUpdateRequest;
 import com.spring.coworker.user.dto.request.UserCreateRequest;
 import com.spring.coworker.user.dto.response.ProfileDto;
@@ -42,5 +43,12 @@ public class UserController {
     //TODO:S3세팅 완료 후 profileImage 업데이트 추가
     ProfileDto result = userService.updateProfile(userId, request);
     return ResponseEntity.ok(result);
+  }
+
+  @PatchMapping("/{userId}/password")
+  ResponseEntity<Void> updatePassword(@PathVariable UUID userId,
+      @RequestBody ChangePasswordRequest request) {
+    userService.updatePassword(userId, request);
+    return ResponseEntity.ok().build();
   }
 }

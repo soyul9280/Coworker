@@ -1,5 +1,6 @@
 package com.spring.coworker.user.service;
 
+import com.spring.coworker.user.dto.request.ChangePasswordRequest;
 import com.spring.coworker.user.dto.request.ProfileUpdateRequest;
 import com.spring.coworker.user.dto.request.UserCreateRequest;
 import com.spring.coworker.user.dto.response.ProfileDto;
@@ -10,4 +11,5 @@ public interface UserService {
   UserDto createUser(UserCreateRequest userCreateRequest);
   ProfileDto findProfile(UUID userId);
   ProfileDto updateProfile(UUID userId, ProfileUpdateRequest profileUpdateRequest);
+  void updatePassword(UUID userId, ChangePasswordRequest changePasswordRequest);
 }
