@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
             .password(userCreateRequest.password())
             .build()
     );
-    return userMapper.toDto(user);
+    return userMapper.toUserDto(user);
   }
 
   @Transactional(readOnly = true)
@@ -67,6 +67,6 @@ public class UserServiceImpl implements UserService {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new IllegalArgumentException("user not found"));
     user.updateRole(userRoleUpdateRequest.role());
-    return userMapper.toDto(user);
+    return userMapper.toUserDto(user);
   }
 }
