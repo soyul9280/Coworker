@@ -4,6 +4,7 @@ import com.spring.coworker.group.entity.Group;
 import com.spring.coworker.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
@@ -21,15 +22,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Table(name = "memberships")
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class MemberShip {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID id;
+
+  @CreatedDate
+  @Column(name = "created_at", updatable = false)
+  private Instant createdAt;
+
+  @LastModifiedDate
+  @Column(name = "updated_at", updatable = true)
+  private Instant updatedAt;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "user_id",columnDefinition = "uuid")
@@ -48,10 +61,22 @@ public class MemberShip {
   private MembershipRole role;
 
   @Builder
-  public MemberShip(User user, Group group, Instant joinedAt) {
+  private MemberShip(
+      UUID id,
+      Instant createdAt,
+      Instant updatedAt,
+      User user,
+      Group group,
+      Instant joinedAt,
+      MembershipRole role
+  ){
+    this.id = id;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
     this.user = user;
     this.group = group;
     this.joinedAt = joinedAt;
+    this.role = role;
   }
 
 }
