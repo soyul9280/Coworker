@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -34,5 +35,14 @@ public class Group {
 
   @Column(name = "image")
   private String imageUrl;
+
+  @Builder
+  public Group(UUID id, String name, Instant createdAt, Instant updatedAt, String imageUrl) {
+    this.id = id;
+    this.name = name;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+    this.imageUrl = imageUrl;
+  }
 
 }
