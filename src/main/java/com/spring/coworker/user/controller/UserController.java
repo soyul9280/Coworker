@@ -41,7 +41,7 @@ public class UserController {
 
   @PatchMapping(value = "/{userId}/profiles"
       , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  ResponseEntity<ProfileDto> updateProfile(
+  public ResponseEntity<ProfileDto> updateProfile(
       @PathVariable UUID userId,
       @Valid @RequestBody ProfileUpdateRequest request,
       @RequestPart(required = false) MultipartFile profileImage
@@ -52,13 +52,13 @@ public class UserController {
   }
 
   @GetMapping("/{userId]/profiles")
-  ResponseEntity<ProfileDto> findProfile(@PathVariable UUID userId) {
+  public ResponseEntity<ProfileDto> findProfile(@PathVariable UUID userId) {
     ProfileDto result = userService.findProfile(userId);
     return ResponseEntity.ok(result);
   }
 
   @PatchMapping("/{userId}/password")
-  ResponseEntity<Void> updatePassword(@PathVariable UUID userId,
+  public ResponseEntity<Void> updatePassword(@PathVariable UUID userId,
       @RequestBody ChangePasswordRequest request) {
     userService.updatePassword(userId, request);
     return ResponseEntity.ok().build();
@@ -72,7 +72,7 @@ public class UserController {
   }
 
   @GetMapping("")
-  ResponseEntity<UserPageResponse<UserDto>> searchUsers(
+  public ResponseEntity<UserPageResponse<UserDto>> searchUsers(
       @RequestParam(required = false) String cursor,
       @RequestParam(required = false) UUID idAfter,
       @RequestParam int limit,
