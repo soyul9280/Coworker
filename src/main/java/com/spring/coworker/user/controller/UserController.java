@@ -1,10 +1,12 @@
 package com.spring.coworker.user.controller;
 
 import com.spring.coworker.global.SortDirection;
+import com.spring.coworker.global.response.PageResponse;
 import com.spring.coworker.user.dto.request.ChangePasswordRequest;
 import com.spring.coworker.user.dto.request.ProfileUpdateRequest;
 import com.spring.coworker.user.dto.request.UserCreateRequest;
 import com.spring.coworker.user.dto.request.UserRoleUpdateRequest;
+import com.spring.coworker.user.dto.request.UserSearchRequest;
 import com.spring.coworker.user.dto.response.ProfileDto;
 import com.spring.coworker.user.dto.response.UserDto;
 import com.spring.coworker.user.dto.response.UserPageResponse;
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,7 +62,7 @@ public class UserController {
 
   @PatchMapping("/{userId}/password")
   public ResponseEntity<Void> updatePassword(@PathVariable UUID userId,
-      @RequestBody ChangePasswordRequest request) {
+      @Valid @RequestBody ChangePasswordRequest request) {
     userService.updatePassword(userId, request);
     return ResponseEntity.ok().build();
   }
@@ -72,17 +75,10 @@ public class UserController {
   }
 
   @GetMapping("")
-  public ResponseEntity<UserPageResponse<UserDto>> searchUsers(
-      @RequestParam(required = false) String cursor,
-      @RequestParam(required = false) UUID idAfter,
-      @RequestParam int limit,
-      @RequestParam String sortBy,
-      @RequestParam SortDirection sortDirection,
-      @RequestParam(required = false) String emailLike,
-      @RequestParam(required = false) Role roleEqual
+  public ResponseEntity<PageResponse> searchUsers(
+      @ModelAttribute @Valid UserSearchRequest request
   ){
-    UserPageResponse<UserDto> result = userService.searchUsers(cursor, idAfter,
-        limit, sortBy, sortDirection, emailLike, roleEqual);
+    PageResponse result = userService.searchUsers(request);
     return ResponseEntity.ok(result);
   }
 }

@@ -1,14 +1,15 @@
 package com.spring.coworker.user.service;
 
 import com.spring.coworker.global.SortDirection;
+import com.spring.coworker.global.response.PageResponse;
 import com.spring.coworker.user.dto.mapper.UserMapper;
 import com.spring.coworker.user.dto.request.ChangePasswordRequest;
 import com.spring.coworker.user.dto.request.ProfileUpdateRequest;
 import com.spring.coworker.user.dto.request.UserCreateRequest;
 import com.spring.coworker.user.dto.request.UserRoleUpdateRequest;
+import com.spring.coworker.user.dto.request.UserSearchRequest;
 import com.spring.coworker.user.dto.response.ProfileDto;
 import com.spring.coworker.user.dto.response.UserDto;
-import com.spring.coworker.user.dto.response.UserPageResponse;
 import com.spring.coworker.user.entity.Role;
 import com.spring.coworker.user.entity.User;
 import com.spring.coworker.user.repository.UserRepository;
@@ -77,8 +78,15 @@ public class UserServiceImpl implements UserService {
 
   @Transactional(readOnly = true)
   @Override
-  public UserPageResponse<UserDto> searchUsers(String cursor, UUID idAfter, int limit,
-      String sortBy, SortDirection sortDirection, String emailLike, Role roleEqual) {
+  public PageResponse searchUsers(UserSearchRequest userSearchRequest) {
+    String cursor = userSearchRequest.cursor();
+    UUID idAfter = userSearchRequest.idAfter();
+    int limit = userSearchRequest.limit();
+    String sortBy = userSearchRequest.sortBy();
+    SortDirection sortDirection = userSearchRequest.sortDirection();
+    String emailLike = userSearchRequest.emailLike();
+    Role roleEqual = userSearchRequest.roleEqual();
+
     Slice<User> slice = userRepository.searchUsers(cursor, idAfter, limit, sortBy, sortDirection,
         emailLike, roleEqual);
     //실제 사용자 리스트 꺼내기
@@ -86,6 +94,7 @@ public class UserServiceImpl implements UserService {
     List<UserDto> userDtos = users.stream()
         .map(userMapper::toUserDto)
         .toList();
+    boolean hasNext = slice.hasNext();
 
     //커서 구하기
     User lastUser = (users.size() > 0) ? users.get(users.size() - 1): null;
@@ -93,7 +102,7 @@ public class UserServiceImpl implements UserService {
     Object nextCursor = null;
     UUID nextIdAfter = null;
     //마지막 사용자 있으면 다음 커서값 넣기
-    if (lastUser != null) {
+    if (lastUser != null&& hasNext) {
       switch (sortBy) {
         case "email":
           nextCursor = lastUser.getEmail();
@@ -106,7 +115,8 @@ public class UserServiceImpl implements UserService {
       }
       nextIdAfter = lastUser.getId();
     }
-    return new UserPageResponse<>(
+
+    return new PageResponse(
         userDtos,
         nextCursor,
         nextIdAfter,
