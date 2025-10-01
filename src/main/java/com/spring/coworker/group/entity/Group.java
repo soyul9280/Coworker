@@ -45,4 +45,14 @@ public class Group {
     this.imageUrl = imageUrl;
   }
 
+  public void updateName(String newName) {
+    if(newName != null&& !newName.isBlank()) {
+      if(!newName.equals(this.name)) {
+        this.name = newName;
+      }
+    }
+  }
+
+
+
 }

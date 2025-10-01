@@ -29,12 +29,18 @@ public class GroupServiceImpl implements GroupService {
   }
 
   @Override
-  public GroupDto updateGroup(GroupUpdateRequest request) {
-    return null;
+  public GroupDto updateGroup(UUID groupId, GroupUpdateRequest request) {
+    Group group = groupRepository.findById(groupId)
+        .orElseThrow(() -> new IllegalArgumentException("Group not found"));
+    group.updateName(request.name());
+    //TODO: S3설정 후 이미지 로직 생성하기
+    return groupMapper.toGroupDto(group);
   }
 
   @Override
   public void deleteGroup(UUID groupId) {
-
+    Group group = groupRepository.findById(groupId)
+        .orElseThrow(() -> new IllegalArgumentException("Group not found"));
+    groupRepository.deleteById(groupId);
   }
 }
