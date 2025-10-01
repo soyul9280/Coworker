@@ -51,6 +51,12 @@ public class UserController {
     return ResponseEntity.ok(result);
   }
 
+  @GetMapping("/{userId]/profiles")
+  ResponseEntity<ProfileDto> findProfile(@PathVariable UUID userId) {
+    ProfileDto result = userService.findProfile(userId);
+    return ResponseEntity.ok(result);
+  }
+
   @PatchMapping("/{userId}/password")
   ResponseEntity<Void> updatePassword(@PathVariable UUID userId,
       @RequestBody ChangePasswordRequest request) {
