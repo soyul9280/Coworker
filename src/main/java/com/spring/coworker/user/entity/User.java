@@ -54,7 +54,7 @@ public class User {
   @Enumerated(EnumType.STRING)
   @JdbcTypeCode(SqlTypes.NAMED_ENUM)
   @Column(nullable = false)
-  private Role role = Role.MEMBER;
+  private Role role = Role.USER;
 
   @Column(name = "image")
   private String profileImageUrl;
