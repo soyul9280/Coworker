@@ -4,6 +4,8 @@ import com.spring.coworker.group.entity.Group;
 import com.spring.coworker.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +19,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Table(name = "memberships")
 @Entity
@@ -37,6 +41,11 @@ public class MemberShip {
 
   @Column(columnDefinition = "timestamp with time zone", nullable = false)
   private Instant joinedAt;
+
+  @Enumerated(EnumType.STRING)
+  @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+  @Column(nullable = false)
+  private MembershipRole role;
 
   @Builder
   public MemberShip(User user, Group group, Instant joinedAt) {
