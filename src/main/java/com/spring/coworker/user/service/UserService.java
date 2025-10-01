@@ -1,10 +1,12 @@
 package com.spring.coworker.user.service;
 
 import com.spring.coworker.global.SortDirection;
+import com.spring.coworker.global.response.PageResponse;
 import com.spring.coworker.user.dto.request.ChangePasswordRequest;
 import com.spring.coworker.user.dto.request.ProfileUpdateRequest;
 import com.spring.coworker.user.dto.request.UserCreateRequest;
 import com.spring.coworker.user.dto.request.UserRoleUpdateRequest;
+import com.spring.coworker.user.dto.request.UserSearchRequest;
 import com.spring.coworker.user.dto.response.ProfileDto;
 import com.spring.coworker.user.dto.response.UserDto;
 import com.spring.coworker.user.dto.response.UserPageResponse;
@@ -18,6 +20,5 @@ public interface UserService {
   void updatePassword(UUID userId, ChangePasswordRequest changePasswordRequest);
   UserDto updateRole(UUID userId, UserRoleUpdateRequest userRoleUpdateRequest);
 
-  UserPageResponse<UserDto> searchUsers(String cursor, UUID idAfter, int limit, String sortBy,
-      SortDirection sortDirection, String emailLike, Role roleEqual);
+  PageResponse searchUsers(UserSearchRequest userSearchRequest);
 }
