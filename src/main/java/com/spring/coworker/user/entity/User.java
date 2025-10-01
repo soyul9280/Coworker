@@ -64,7 +64,7 @@ public class User {
   private List<OAuthProvider> linkedOAuthProviders;
 
   @Builder
-  public User(UUID id,
+  private User(UUID id,
       Instant createdAt,
       Instant updatedAt,
       String email,

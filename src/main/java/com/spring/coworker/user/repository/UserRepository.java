@@ -4,6 +4,8 @@ import com.spring.coworker.user.entity.User;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, UUID> {
+public interface UserRepository extends JpaRepository<User, UUID>,UserCustomRepository {
   boolean existsByEmail(String email);
+
+  String email(String email);
 }
