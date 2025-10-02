@@ -36,4 +36,11 @@ public class MembershipController {
     return ResponseEntity.ok(result);
   }
 
+  @DeleteMapping("/{membershipId}")
+  public ResponseEntity<Void> deleteMembership(
+      @PathVariable UUID membershipId) {
+    membershipService.delete(membershipId);
+    return ResponseEntity.noContent().build();
+  }
+
 }
