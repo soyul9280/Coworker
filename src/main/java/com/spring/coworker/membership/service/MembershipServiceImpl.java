@@ -2,6 +2,7 @@ package com.spring.coworker.membership.service;
 
 import com.spring.coworker.group.entity.Group;
 import com.spring.coworker.group.repository.GroupRepository;
+import com.spring.coworker.membership.dto.request.MemberShipUpdateRequest;
 import com.spring.coworker.membership.dto.request.MembershipCreateRequest;
 import com.spring.coworker.membership.dto.response.MemberShipDto;
 import com.spring.coworker.membership.entity.MemberShip;
@@ -50,4 +51,15 @@ public class MembershipServiceImpl implements MembershipService {
     membershipRepository.save(memberShip);
     return membershipMapper.toMembershipDto(memberShip);
   }
+
+  @Override
+  public MemberShipDto update(UUID membershipId,MemberShipUpdateRequest request) {
+    MemberShip memberShip = membershipRepository.findById(membershipId)
+        .orElseThrow(() -> new IllegalArgumentException("membership not found"));
+    memberShip.updateRole(request.newRole());
+    return membershipMapper.toMembershipDto(memberShip);
+  }
+
+
+
 }
