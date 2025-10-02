@@ -2,6 +2,7 @@ package com.spring.coworker.article.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.UUID;
 
 public record ArticleCreateRequest(
     @NotNull(message = "제목이 null이어서는 안됩니다.")
@@ -9,7 +10,9 @@ public record ArticleCreateRequest(
     String title,
     @NotNull(message = "내용이 null이어서는 안됩니다.")
     String content,
-    String imageUrl
+    String imageUrl,
+    @NotNull
+    UUID writerId
 ) {
 
 }

@@ -15,5 +15,5 @@ public class ArticleDto {
     private String title;
     private String content;
     private String imageUrl;
-    private User writer;
+    private WriterDto writer;
 }

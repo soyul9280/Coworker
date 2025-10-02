@@ -14,6 +14,7 @@ import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -54,5 +55,15 @@ public class Article {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "writer_id",nullable = false)
   private User writer;
+
+  @Builder
+  public Article(String title, Instant createdAt,Instant updatedAt,String content, String imageUrl,User user) {
+    this.title = title;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+    this.content = content;
+    this.imageUrl = imageUrl;
+    this.writer = user;
+  }
 
 }
