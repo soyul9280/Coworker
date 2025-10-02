@@ -8,4 +8,5 @@ import java.util.UUID;
 public interface MembershipService {
   MemberShipDto create(MembershipCreateRequest request);
   MemberShipDto update(UUID membershipId,MemberShipUpdateRequest request);
+  void delete(UUID membershipId);
 }

@@ -60,6 +60,12 @@ public class MembershipServiceImpl implements MembershipService {
     return membershipMapper.toMembershipDto(memberShip);
   }
 
+  @Override
+  public void delete(UUID membershipId) {
+    MemberShip memberShip = membershipRepository.findById(membershipId)
+        .orElseThrow(() -> new IllegalArgumentException("membership not found"));
+    membershipRepository.deleteById(membershipId);
+  }
 
 
 }
