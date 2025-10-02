@@ -1,6 +1,8 @@
 package com.spring.coworker.group.controller;
 
+import com.spring.coworker.global.response.PageResponse;
 import com.spring.coworker.group.dto.request.GroupCreateRequest;
+import com.spring.coworker.group.dto.request.GroupSearchRequest;
 import com.spring.coworker.group.dto.request.GroupUpdateRequest;
 import com.spring.coworker.group.dto.response.GroupDto;
 import com.spring.coworker.group.service.GroupService;
@@ -9,6 +11,8 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +42,14 @@ public class GroupController {
   public ResponseEntity<Void> deleteGroup(@PathVariable UUID groupId) {
     groupService.deleteGroup(groupId);
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("")
+  public ResponseEntity<PageResponse> searchGroups(
+      @ModelAttribute @Valid GroupSearchRequest groupSearchRequest
+  ){
+    PageResponse result = groupService.searchGroups(groupSearchRequest);
+    return ResponseEntity.ok(result);
   }
 
 }

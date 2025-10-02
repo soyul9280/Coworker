@@ -1,6 +1,9 @@
 package com.spring.coworker.group.service;
 
+import com.spring.coworker.global.SortDirection;
+import com.spring.coworker.global.response.PageResponse;
 import com.spring.coworker.group.dto.request.GroupCreateRequest;
+import com.spring.coworker.group.dto.request.GroupSearchRequest;
 import com.spring.coworker.group.dto.request.GroupUpdateRequest;
 import com.spring.coworker.group.dto.response.GroupDto;
 import com.spring.coworker.group.entity.Group;
@@ -12,8 +15,10 @@ import com.spring.coworker.membership.repository.MembershipRepository;
 import com.spring.coworker.user.entity.User;
 import com.spring.coworker.user.repository.UserRepository;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,4 +75,55 @@ public class GroupServiceImpl implements GroupService {
     membershipRepository.deleteAllByGroupId(groupId);
     groupRepository.deleteById(groupId);
   }
+
+  @Transactional(readOnly = true)
+  @Override
+  public PageResponse searchGroups(GroupSearchRequest request) {
+    String cursor = request.cursor();
+    UUID idAfter = request.idAfter();
+    int limit = request.limit();
+    SortDirection sortDirection = request.sortDirection();
+    String sortBy = request.sortBy();
+    String nameLike = request.nameLike();
+
+    Slice<Group> slice = groupRepository.searchGroups(cursor, idAfter, limit, sortBy,
+        sortDirection, nameLike);
+    List<Group> groups = slice.getContent();
+
+    List<GroupDto> groupsDtos = groups.stream()
+        .map(groupMapper::toGroupDto)
+        .toList();
+
+    boolean hasNext = slice.hasNext();
+    Group lastGroup = (groups.size() > 0) ? groups.get(groups.size() - 1) : null;
+
+    Object nextCursor = null;
+    UUID nextIdAfter = null;
+
+    if(lastGroup != null&&hasNext) {
+      switch (sortBy) {
+        case "name":
+          nextCursor = lastGroup.getName();
+          break;
+        case "createdAt":
+          nextCursor = lastGroup.getCreatedAt();
+          break;
+          default:
+            throw new IllegalArgumentException("지원하지 않는 정렬 기준입니다.");
+      }
+      nextIdAfter = lastGroup.getId();
+    }
+
+    return new PageResponse(
+        groupsDtos,
+        nextCursor,
+        nextIdAfter,
+        slice.hasNext(),
+        groupRepository.getTotalGroups(nameLike),
+        sortBy,
+        sortDirection.name()
+    );
+  }
+
+
 }

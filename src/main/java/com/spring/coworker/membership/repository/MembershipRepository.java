@@ -4,7 +4,7 @@ import com.spring.coworker.membership.entity.MemberShip;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MembershipRepository extends JpaRepository<MemberShip,UUID> {
+public interface MembershipRepository extends JpaRepository<MemberShip,UUID>,MembershipCustomRepository {
   boolean existsByUserIdAndGroupId(UUID userId, UUID groupId);
   void deleteAllByGroupId(UUID groupId);
 }

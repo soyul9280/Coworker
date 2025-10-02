@@ -10,6 +10,7 @@ import lombok.Getter;
 public class GroupDto {
   private final UUID id;
   private final Instant createdAt;
+  private final Instant updatedAt;
   private final String name;
   private final String imageUrl;
 }
