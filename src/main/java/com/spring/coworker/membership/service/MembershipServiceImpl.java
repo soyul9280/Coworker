@@ -1,9 +1,12 @@
 package com.spring.coworker.membership.service;
 
+import com.spring.coworker.global.SortDirection;
+import com.spring.coworker.global.response.PageResponse;
 import com.spring.coworker.group.entity.Group;
 import com.spring.coworker.group.repository.GroupRepository;
 import com.spring.coworker.membership.dto.request.MemberShipUpdateRequest;
 import com.spring.coworker.membership.dto.request.MembershipCreateRequest;
+import com.spring.coworker.membership.dto.request.MembershipSearchRequest;
 import com.spring.coworker.membership.dto.response.MemberShipDto;
 import com.spring.coworker.membership.entity.MemberShip;
 import com.spring.coworker.membership.entity.MembershipRole;
@@ -12,8 +15,10 @@ import com.spring.coworker.membership.repository.MembershipRepository;
 import com.spring.coworker.user.entity.User;
 import com.spring.coworker.user.repository.UserRepository;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,6 +70,55 @@ public class MembershipServiceImpl implements MembershipService {
     MemberShip memberShip = membershipRepository.findById(membershipId)
         .orElseThrow(() -> new IllegalArgumentException("membership not found"));
     membershipRepository.deleteById(membershipId);
+  }
+
+  @Override
+  public PageResponse searchMemberships(MembershipSearchRequest request) {
+    String cursor = request.cursor();
+    UUID idAfter=request.idAfter();
+    int limit = request.limit();
+    String sortBy = request.sortBy();
+    SortDirection sortDirection = request.sortDirection();
+    Instant joinedAt = request.joinedAt();
+    MembershipRole roleEqual = request.roleEqual();
+
+    Slice<MemberShip> slice = membershipRepository.searchMemberShips(cursor, idAfter, limit,
+        sortBy, sortDirection, joinedAt, roleEqual);
+    List<MemberShip> memberShips = slice.getContent();
+
+    List<MemberShipDto> membershipDtos = memberShips.stream()
+        .map(membershipMapper::toMembershipDto)
+        .toList();
+
+    boolean hasNext = slice.hasNext();
+
+    MemberShip lastMembership = (membershipDtos.size()>0)? memberShips.get(membershipDtos.size()-1):null;
+
+    Object nextCursor = null;
+    UUID nextIdAfter = null;
+
+    if(lastMembership != null&&hasNext) {
+      switch(sortBy) {
+        case "joinedAt":
+          nextCursor = lastMembership.getJoinedAt();
+          break;
+        case "createdAt":
+          nextCursor = lastMembership.getCreatedAt();
+          break;
+          default:
+            throw new IllegalArgumentException("지원하지 않는 정렬 기준입니다.");
+      }
+      nextIdAfter = lastMembership.getId();
+    }
+    return new PageResponse(
+        membershipDtos,
+        nextCursor,
+        nextIdAfter,
+        slice.hasNext(),
+        membershipRepository.getTotalCount(joinedAt,roleEqual),
+        sortBy,
+        sortDirection.name()
+    );
   }
 
 
