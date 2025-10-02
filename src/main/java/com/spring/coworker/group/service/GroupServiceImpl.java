@@ -66,6 +66,8 @@ public class GroupServiceImpl implements GroupService {
   public void deleteGroup(UUID groupId) {
     Group group = groupRepository.findById(groupId)
         .orElseThrow(() -> new IllegalArgumentException("Group not found"));
+
+    membershipRepository.deleteAllByGroupId(groupId);
     groupRepository.deleteById(groupId);
   }
 }

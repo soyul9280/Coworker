@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MembershipRepository extends JpaRepository<MemberShip,UUID> {
   boolean existsByUserIdAndGroupId(UUID userId, UUID groupId);
-
+  void deleteAllByGroupId(UUID groupId);
 }
