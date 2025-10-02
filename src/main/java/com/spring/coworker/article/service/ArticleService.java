@@ -8,4 +8,5 @@ import java.util.UUID;
 public interface ArticleService {
   ArticleDto createArticle(ArticleCreateRequest request);
   ArticleDto updateArticle(UUID articleId, ArticleUpdaterRequest request);
+  void deleteArticle(UUID articleId);
 }

@@ -52,4 +52,11 @@ public class ArticleServiceImpl implements ArticleService {
     WriterDto writerDto = writerMapper.toWriterDto(article.getWriter());
     return articleMapper.toArticleDto(article, writerDto);
   }
+
+  @Override
+  public void deleteArticle(UUID articleId) {
+    Article article = articleRepository.findById(articleId)
+        .orElseThrow(() -> new IllegalArgumentException("Article not found"));
+    articleRepository.deleteById(articleId);
+  }
 }
