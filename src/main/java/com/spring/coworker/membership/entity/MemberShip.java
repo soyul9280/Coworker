@@ -79,4 +79,12 @@ public class MemberShip {
     this.role = role;
   }
 
+  public void updateRole(MembershipRole newRole){
+    if (newRole != null) {
+      if(!newRole.equals(this.role)) {
+        this.role = newRole;
+      }
+    }
+  }
+
 }
