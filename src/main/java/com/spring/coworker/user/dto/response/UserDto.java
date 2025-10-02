@@ -13,6 +13,7 @@ import lombok.Getter;
 public class UserDto {
   private final UUID id;
   private final Instant createdAt;
+  private final Instant updatedAt;
   private final String email;
   private final String name;
   private final Role role;

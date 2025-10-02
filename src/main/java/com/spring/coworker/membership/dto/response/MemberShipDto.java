@@ -15,6 +15,7 @@ public class MemberShipDto {
   private final User user;
   private final Group group;
   private final Instant createdAt;
+  private final Instant updatedAt;
   private final Instant joinedAt;
   private final MembershipRole role;
 }

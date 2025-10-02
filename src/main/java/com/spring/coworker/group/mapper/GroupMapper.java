@@ -2,9 +2,20 @@ package com.spring.coworker.group.mapper;
 
 import com.spring.coworker.group.dto.response.GroupDto;
 import com.spring.coworker.group.entity.Group;
-import org.mapstruct.Mapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface GroupMapper {
-  GroupDto toGroupDto(Group group);
+@Component
+@RequiredArgsConstructor
+public class GroupMapper {
+
+  public GroupDto toGroupDto(Group group){
+    return GroupDto.builder()
+        .id(group.getId())
+        .createdAt(group.getCreatedAt())
+        .updatedAt(group.getUpdatedAt())
+        .name(group.getName())
+        .imageUrl(group.getImageUrl())
+        .build();
+  }
 }
