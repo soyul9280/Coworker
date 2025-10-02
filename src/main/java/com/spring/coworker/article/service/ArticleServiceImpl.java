@@ -1,6 +1,7 @@
 package com.spring.coworker.article.service;
 
 import com.spring.coworker.article.dto.request.ArticleCreateRequest;
+import com.spring.coworker.article.dto.request.ArticleUpdaterRequest;
 import com.spring.coworker.article.dto.response.ArticleDto;
 import com.spring.coworker.article.dto.response.WriterDto;
 import com.spring.coworker.article.entity.Article;
@@ -9,6 +10,7 @@ import com.spring.coworker.article.mapper.WriterMapper;
 import com.spring.coworker.article.repository.ArticleRepository;
 import com.spring.coworker.user.entity.User;
 import com.spring.coworker.user.repository.UserRepository;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,5 +42,14 @@ public class ArticleServiceImpl implements ArticleService {
     WriterDto writerDto = writerMapper.toWriterDto(writer);
     return articleMapper.toArticleDto(result, writerDto);
 
+  }
+
+  @Override
+  public ArticleDto updateArticle(UUID articleId,ArticleUpdaterRequest request) {
+    Article article = articleRepository.findById(articleId)
+        .orElseThrow(() -> new IllegalArgumentException("Article not found"));
+    article.updateArticle(request);
+    WriterDto writerDto = writerMapper.toWriterDto(article.getWriter());
+    return articleMapper.toArticleDto(article, writerDto);
   }
 }

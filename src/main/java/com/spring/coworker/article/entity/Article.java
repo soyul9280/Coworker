@@ -1,5 +1,6 @@
 package com.spring.coworker.article.entity;
 
+import com.spring.coworker.article.dto.request.ArticleUpdaterRequest;
 import com.spring.coworker.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -64,6 +65,19 @@ public class Article {
     this.content = content;
     this.imageUrl = imageUrl;
     this.writer = user;
+  }
+
+  public void updateArticle(ArticleUpdaterRequest request) {
+    if (request.title() != null && !request.title().isBlank()) {
+      if(!title.equals(request.title())) {
+        title = request.title();
+      }
+    }
+    if (request.content() != null && !request.content().isBlank()) {
+      if(!content.equals(request.content())) {
+        content = request.content();
+      }
+    }
   }
 
 }
