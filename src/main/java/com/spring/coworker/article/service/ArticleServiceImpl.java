@@ -119,4 +119,12 @@ public class ArticleServiceImpl implements ArticleService {
         .orElseThrow(() -> new IllegalArgumentException("Article not found"));
     return articleMapper.toArticleDto(article);
   }
+
+  @Override
+  public ArticleDto upLikeCount(UUID articleId) {
+    Article article = articleRepository.findById(articleId)
+        .orElseThrow(() -> new IllegalArgumentException("Article not found"));
+    article.upLikeCount();
+    return articleMapper.toArticleDto(article);
+  }
 }

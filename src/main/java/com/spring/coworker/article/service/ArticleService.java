@@ -13,4 +13,5 @@ public interface ArticleService {
   void deleteArticle(UUID articleId);
   PageResponse searchArticles(ArticleSearchRequest request);
   ArticleDto findArticle(UUID articleId);
+  ArticleDto upLikeCount(UUID articleId);
 }
