@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, UUID>,ArticleCustomRepository {
   boolean existsByTitle(String title);
+
+  UUID id(UUID id);
 }

@@ -15,6 +15,6 @@ public interface ArticleCustomRepository {
       String titleLike
   );
 
-  Long getTotalCount(String titleLike, int likeCount);
+  Long getTotalCount(String titleLike);
 
 }

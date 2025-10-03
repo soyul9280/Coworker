@@ -87,7 +87,7 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
   }
 
   @Override
-  public Long getTotalCount(String titleLike, int likeCount) {
+  public Long getTotalCount(String titleLike) {
     QArticle article = QArticle.article;
     BooleanBuilder where = new BooleanBuilder();
     where.and((titleLike ==null||titleLike.isBlank())?null:article.title.containsIgnoreCase(titleLike));

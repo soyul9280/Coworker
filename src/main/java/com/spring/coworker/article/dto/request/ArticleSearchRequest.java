@@ -18,8 +18,6 @@ public record ArticleSearchRequest(
     String sortBy,
     @NotNull
     SortDirection sortDirection,
-    String titleLike,
-    int likeCount
-) {
+    String titleLike) {
 
 }
