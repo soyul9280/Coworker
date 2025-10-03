@@ -4,7 +4,6 @@ import com.spring.coworker.article.dto.request.ArticleCreateRequest;
 import com.spring.coworker.article.dto.request.ArticleSearchRequest;
 import com.spring.coworker.article.dto.request.ArticleUpdaterRequest;
 import com.spring.coworker.article.dto.response.ArticleDto;
-import com.spring.coworker.article.dto.response.WriterDto;
 import com.spring.coworker.article.entity.Article;
 import com.spring.coworker.article.mapper.ArticleMapper;
 import com.spring.coworker.article.mapper.WriterMapper;
@@ -22,11 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ArticleServiceImpl implements ArticleService {
   private final ArticleRepository articleRepository;
   private final ArticleMapper articleMapper;
   private final UserRepository userRepository;
-  private final WriterMapper writerMapper;
 
   @Override
   public ArticleDto createArticle(ArticleCreateRequest request) {
@@ -111,5 +110,13 @@ public class ArticleServiceImpl implements ArticleService {
         direction.name()
     );
 
+  }
+
+  @Transactional(readOnly = true)
+  @Override
+  public ArticleDto findArticle(UUID articleId) {
+    Article article = articleRepository.findById(articleId)
+        .orElseThrow(() -> new IllegalArgumentException("Article not found"));
+    return articleMapper.toArticleDto(article);
   }
 }

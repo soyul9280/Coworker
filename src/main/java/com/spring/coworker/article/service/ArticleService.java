@@ -12,4 +12,5 @@ public interface ArticleService {
   ArticleDto updateArticle(UUID articleId, ArticleUpdaterRequest request);
   void deleteArticle(UUID articleId);
   PageResponse searchArticles(ArticleSearchRequest request);
+  ArticleDto findArticle(UUID articleId);
 }
