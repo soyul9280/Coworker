@@ -7,9 +7,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@Builder
 public class WriterDto {
   private UUID id;
   private String name;
   private String email;
+
+  @Builder
+  public WriterDto(UUID id, String name, String email) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+  }
 }
