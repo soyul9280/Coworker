@@ -14,4 +14,5 @@ public interface ArticleService {
   PageResponse searchArticles(ArticleSearchRequest request);
   ArticleDto findArticle(UUID articleId);
   ArticleDto upLikeCount(UUID articleId);
+  ArticleDto downLikeCount(UUID articleId);
 }

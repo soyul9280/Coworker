@@ -6,7 +6,6 @@ import com.spring.coworker.article.dto.request.ArticleUpdaterRequest;
 import com.spring.coworker.article.dto.response.ArticleDto;
 import com.spring.coworker.article.entity.Article;
 import com.spring.coworker.article.mapper.ArticleMapper;
-import com.spring.coworker.article.mapper.WriterMapper;
 import com.spring.coworker.article.repository.ArticleRepository;
 import com.spring.coworker.global.SortDirection;
 import com.spring.coworker.global.response.PageResponse;
@@ -125,6 +124,14 @@ public class ArticleServiceImpl implements ArticleService {
     Article article = articleRepository.findById(articleId)
         .orElseThrow(() -> new IllegalArgumentException("Article not found"));
     article.upLikeCount();
+    return articleMapper.toArticleDto(article);
+  }
+
+  @Override
+  public ArticleDto downLikeCount(UUID articleId) {
+    Article article = articleRepository.findById(articleId)
+        .orElseThrow(() -> new IllegalArgumentException("Article not found"));
+    article.downLikeCount();
     return articleMapper.toArticleDto(article);
   }
 }

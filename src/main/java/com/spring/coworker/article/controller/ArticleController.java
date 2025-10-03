@@ -65,4 +65,10 @@ public class ArticleController {
     ArticleDto result = articleService.upLikeCount(articleId);
     return ResponseEntity.ok(result);
   }
+
+  @DeleteMapping("/{articleId}/like")
+  public ResponseEntity<ArticleDto> deleteLikeCount(@PathVariable UUID articleId) {
+    ArticleDto result = articleService.downLikeCount(articleId);
+    return ResponseEntity.ok(result);
+  }
 }
