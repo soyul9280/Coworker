@@ -53,4 +53,10 @@ public class ArticleController {
     PageResponse result = articleService.searchArticles(request);
     return ResponseEntity.ok(result);
   }
+
+  @GetMapping("/{articleId}")
+  public ResponseEntity<ArticleDto> getArticle(@PathVariable UUID articleId) {
+    ArticleDto result = articleService.findArticle(articleId);
+    return ResponseEntity.ok(result);
+  }
 }
