@@ -35,7 +35,7 @@ public class ArticleController {
 
   @PatchMapping("/{articleId}")
   public ResponseEntity<ArticleDto> updateArticle(@PathVariable UUID articleId
-  ,@Valid @RequestBody ArticleUpdaterRequest request) {
+      , @Valid @RequestBody ArticleUpdaterRequest request) {
     ArticleDto result = articleService.updateArticle(articleId, request);
     return ResponseEntity.ok(result);
   }
@@ -57,6 +57,12 @@ public class ArticleController {
   @GetMapping("/{articleId}")
   public ResponseEntity<ArticleDto> getArticle(@PathVariable UUID articleId) {
     ArticleDto result = articleService.findArticle(articleId);
+    return ResponseEntity.ok(result);
+  }
+
+  @PostMapping("/{articleId}/like")
+  public ResponseEntity<ArticleDto> upLikeCount(@PathVariable UUID articleId) {
+    ArticleDto result = articleService.upLikeCount(articleId);
     return ResponseEntity.ok(result);
   }
 }
