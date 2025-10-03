@@ -1,14 +1,18 @@
 package com.spring.coworker.article.controller;
 
 import com.spring.coworker.article.dto.request.ArticleCreateRequest;
+import com.spring.coworker.article.dto.request.ArticleSearchRequest;
 import com.spring.coworker.article.dto.request.ArticleUpdaterRequest;
 import com.spring.coworker.article.dto.response.ArticleDto;
 import com.spring.coworker.article.service.ArticleService;
+import com.spring.coworker.global.response.PageResponse;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +35,7 @@ public class ArticleController {
 
   @PatchMapping("/{articleId}")
   public ResponseEntity<ArticleDto> updateArticle(@PathVariable UUID articleId
-  ,@Valid @RequestBody ArticleUpdaterRequest request) {
+      , @Valid @RequestBody ArticleUpdaterRequest request) {
     ArticleDto result = articleService.updateArticle(articleId, request);
     return ResponseEntity.ok(result);
   }
@@ -40,5 +44,31 @@ public class ArticleController {
   public ResponseEntity<Void> deleteArticle(@PathVariable UUID articleId) {
     articleService.deleteArticle(articleId);
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("")
+  public ResponseEntity<PageResponse> searchArticles(
+      @ModelAttribute @Valid ArticleSearchRequest request
+  ) {
+    PageResponse result = articleService.searchArticles(request);
+    return ResponseEntity.ok(result);
+  }
+
+  @GetMapping("/{articleId}")
+  public ResponseEntity<ArticleDto> getArticle(@PathVariable UUID articleId) {
+    ArticleDto result = articleService.findArticle(articleId);
+    return ResponseEntity.ok(result);
+  }
+
+  @PostMapping("/{articleId}/like")
+  public ResponseEntity<ArticleDto> upLikeCount(@PathVariable UUID articleId) {
+    ArticleDto result = articleService.upLikeCount(articleId);
+    return ResponseEntity.ok(result);
+  }
+
+  @DeleteMapping("/{articleId}/like")
+  public ResponseEntity<ArticleDto> deleteLikeCount(@PathVariable UUID articleId) {
+    ArticleDto result = articleService.downLikeCount(articleId);
+    return ResponseEntity.ok(result);
   }
 }
