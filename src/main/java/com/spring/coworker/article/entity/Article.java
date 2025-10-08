@@ -51,7 +51,7 @@ public class Article {
   private String imageUrl;
 
   @Column(name = "like_count")
-  private int likeCount;
+  private int likeCount =0;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "writer_id",nullable = false)
@@ -78,6 +78,17 @@ public class Article {
         content = request.content();
       }
     }
+  }
+
+  public void upLikeCount() {
+    likeCount++;
+  }
+
+  public void downLikeCount() {
+    if(likeCount <= 0) {
+      throw new IllegalArgumentException("좋아요는 음수일 수 없습니다.");
+    }
+    likeCount--;
   }
 
 }

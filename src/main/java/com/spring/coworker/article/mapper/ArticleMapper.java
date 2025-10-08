@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ArticleMapper {
-  public ArticleDto toArticleDto(Article article, WriterDto writerDto){
+  private final WriterMapper writerMapper;
+  public ArticleDto toArticleDto(Article article){
+    WriterDto writerDto = writerMapper.toWriterDto(article.getWriter());
     return ArticleDto.builder()
         .articleId(article.getId())
         .createdAt(article.getCreatedAt())
